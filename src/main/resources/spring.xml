@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+  http://www.springframework.org/schema/aop
+  http://www.springframework.org/schema/aop/spring-aop.xsd
+  http://www.springframework.org/schema/tx
+  http://www.springframework.org/schema/tx/spring-tx.xsd
+">
+
+<!--配置数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=yes&amp;characterEncoding=utf-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123"/>
+
+        <property name="maxActive" value="10"/>
+        <property name="minIdle" value="2"/>
+        <property name="maxWait" value="12000"/>
+    </bean>
+
+    <!--整合mybaite和spring-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--整合数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--整合mybatis配置文件-->
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+        <!--整合映射文件-->
+        <property name="mapperLocations" value="classpath:mapper/**"/>
+    </bean>
+
+    <!--配置dao-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--整合sqlSessionFactoryBean-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!--指定dao层所在的包-->
+        <property name="basePackage" value="org.lanqiao.dao"/>
+    </bean>
+
+    <!--配置事务管理器，spring来处理数据库事务-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--配置数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:advice id="serviceAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="modify*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="del*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="remove*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+
+            <!--除了以上的方法，其他方法都是只读-->
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置哪些方法需要事务管理-->
+    <aop:config>
+        <aop:pointcut id="p" expression="execution(* org.lanqiao.service..*.*(..))"/>
+    </aop:config>
+
+
+</beans>
