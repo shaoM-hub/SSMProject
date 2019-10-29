@@ -11,7 +11,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //获取用户信息放入session中，如果用户不为空，登陆成功，否则返回登陆页面
         System.out.println("进入拦截器");
-        Object user = request.getSession().getAttribute("user");
+        Object user = request.getSession().getAttribute("User");
         if (user!=null){
             return true;
         }else {
