@@ -9,4 +9,5 @@ public class Administrator {
     private int admId;
     private String admName;
     private String admPass;
+
 }

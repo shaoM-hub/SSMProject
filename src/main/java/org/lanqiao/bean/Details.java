@@ -8,15 +8,27 @@ import java.util.Date;
 @Data
 @ToString
 public class Details {
-    private int detId;   //旅客Id;
-    private int userId;
+    private Integer detId;
+
+    private Integer userId;
+
     private String detName;
-    private String detType;      //成人、儿童
+
+    private String detType;
+
     private String detSex;
-    private Date detDate;
+
+    private String detData;
+
     private String detEmail;
+
     private String detPhone;
-    private String detNationality; //国籍
-    private String detStart;       //出发地址
-    private String detEnd;         //目的地
+
+    private String detNationality;
+
+    private String detStart;
+
+    private String detEnd;
+
+
 }

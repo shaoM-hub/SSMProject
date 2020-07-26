@@ -6,9 +6,17 @@ import lombok.ToString;
 @Data
 @ToString
 public class Address {
-    private int addId;       //地址Id
-    private String addName;  //地址
-    private String addCity;  //市
-    private int addPostcode; //邮政编码
-    private String addProvince; //省
+    private Integer addId;
+
+    private String addName;
+
+    private String addCity;
+
+    private String addProvince;
+
+    private String addPostcode;
+
+    private Integer userId;
+
+
 }
